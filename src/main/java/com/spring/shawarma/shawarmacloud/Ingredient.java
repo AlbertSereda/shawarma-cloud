@@ -9,7 +9,7 @@ public class Ingredient {
     private final Type type;
 
     public enum Type {
-        LAVASH, MEAT, TOMATOES, CUCUMBERS, SAUCE
+        WRAP, MEAT, VEGGIES, SAUCE, ADDITIVES
     }
 
     public Ingredient(String id, String name, Type type) {
