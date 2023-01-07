@@ -2,17 +2,22 @@ package com.spring.shawarma.shawarmacloud;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class Shawarma {
 
+    private Long id;
+
+    private Date createdAt = new Date();
+
     @NotNull
-    @Size(min=5, message="Name must be at least 5 characters long")
+    @Size(min = 5, message = "Name must be at least 5 characters long")
     private String name;
 
     @NotNull
-    @Size(min=1, message="You must choose at least 1 ingredient")
+    @Size(min = 1, message = "You must choose at least 1 ingredient")
     private List<Ingredient> ingredients;
 
     public Shawarma(String name, List<Ingredient> ingredients) {
@@ -39,23 +44,41 @@ public class Shawarma {
         this.ingredients = ingredients;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Shawarma shawarma = (Shawarma) o;
-        return name.equals(shawarma.name) && ingredients.equals(shawarma.ingredients);
+        return id.equals(shawarma.id) && createdAt.equals(shawarma.createdAt) && name.equals(shawarma.name) && ingredients.equals(shawarma.ingredients);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, ingredients);
+        return Objects.hash(id, createdAt, name, ingredients);
     }
 
     @Override
     public String toString() {
         return "Shawarma{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", createdAt=" + createdAt +
+                ", name='" + name + '\'' +
                 ", ingredients=" + ingredients +
                 '}';
     }

@@ -1,6 +1,7 @@
 package com.spring.shawarma.shawarmacloud.web;
 
 import com.spring.shawarma.shawarmacloud.ShawarmaOrder;
+import com.spring.shawarma.shawarmacloud.data.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,12 @@ public class OrderController {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
+    private OrderRepository orderRepository;
+
+    public OrderController(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
     @GetMapping("/current")
     public String orderForm() {
         return "orderForm";
@@ -30,11 +37,12 @@ public class OrderController {
                                Errors errors,
                                SessionStatus sessionStatus) {
 
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             return "orderForm";
         }
 
         logger.info("Order submitted: {}", order);
+        orderRepository.save(order);
         sessionStatus.setComplete();
         return "redirect:/";
     }

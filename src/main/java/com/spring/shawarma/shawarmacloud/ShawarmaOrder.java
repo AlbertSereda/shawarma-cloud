@@ -5,40 +5,50 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class ShawarmaOrder {
+public class ShawarmaOrder implements Serializable {
 
-    @NotBlank(message="Delivery name is required")
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
+
+    private Date placedAt = new Date();
+
+    @NotBlank(message = "Delivery name is required")
     public String deliveryName;
 
-    @NotBlank(message="Street is required")
+    @NotBlank(message = "Street is required")
     private String deliveryStreet;
 
-    @NotBlank(message="City is required")
+    @NotBlank(message = "City is required")
     private String deliveryCity;
 
-    @NotBlank(message="State is required")
+    @NotBlank(message = "State is required")
     private String deliveryState;
 
-    @NotBlank(message="Zip code is required")
+    @NotBlank(message = "Zip code is required")
     private String deliveryZip;
 
-    @CreditCardNumber(message="Not a valid credit card number")
+    @CreditCardNumber(message = "Not a valid credit card number")
     private String ccNumber;
 
-    @Pattern(regexp="^(0[1-9]|1[0-2])([\\/])([2-9][0-9])$",
-            message="Must be formatted MM/YY")
+    @Pattern(regexp = "^(0[1-9]|1[0-2])([\\/])([2-9][0-9])$",
+            message = "Must be formatted MM/YY")
     private String ccExpiration;
 
-    @Digits(integer=3, fraction=0, message="Invalid CVV")
+    @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
 
     private List<Shawarma> shawarmas = new ArrayList<>();
 
-    public ShawarmaOrder(String deliveryName, String deliveryStreet, String deliveryCity, String deliveryState, String deliveryZip, String ccNumber, String ccExpiration, String ccCVV, List<Shawarma> shawarmas) {
+    public ShawarmaOrder(Long id, Date placedAt, String deliveryName, String deliveryStreet, String deliveryCity, String deliveryState, String deliveryZip, String ccNumber, String ccExpiration, String ccCVV, List<Shawarma> shawarmas) {
+        this.id = id;
+        this.placedAt = placedAt;
         this.deliveryName = deliveryName;
         this.deliveryStreet = deliveryStreet;
         this.deliveryCity = deliveryCity;
@@ -129,23 +139,41 @@ public class ShawarmaOrder {
         this.shawarmas = shawarmas;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getPlacedAt() {
+        return placedAt;
+    }
+
+    public void setPlacedAt(Date placedAt) {
+        this.placedAt = placedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShawarmaOrder that = (ShawarmaOrder) o;
-        return Objects.equals(deliveryName, that.deliveryName) && Objects.equals(deliveryStreet, that.deliveryStreet) && Objects.equals(deliveryCity, that.deliveryCity) && Objects.equals(deliveryState, that.deliveryState) && Objects.equals(deliveryZip, that.deliveryZip) && Objects.equals(ccNumber, that.ccNumber) && Objects.equals(ccExpiration, that.ccExpiration) && Objects.equals(ccCVV, that.ccCVV) && Objects.equals(shawarmas, that.shawarmas);
+        return id.equals(that.id) && placedAt.equals(that.placedAt) && deliveryName.equals(that.deliveryName) && deliveryStreet.equals(that.deliveryStreet) && deliveryCity.equals(that.deliveryCity) && deliveryState.equals(that.deliveryState) && deliveryZip.equals(that.deliveryZip) && ccNumber.equals(that.ccNumber) && ccExpiration.equals(that.ccExpiration) && ccCVV.equals(that.ccCVV) && shawarmas.equals(that.shawarmas);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(deliveryName, deliveryStreet, deliveryCity, deliveryState, deliveryZip, ccNumber, ccExpiration, ccCVV, shawarmas);
+        return Objects.hash(id, placedAt, deliveryName, deliveryStreet, deliveryCity, deliveryState, deliveryZip, ccNumber, ccExpiration, ccCVV, shawarmas);
     }
 
     @Override
     public String toString() {
         return "ShawarmaOrder{" +
-                "deliveryName='" + deliveryName + '\'' +
+                "id=" + id +
+                ", placedAt=" + placedAt +
+                ", deliveryName='" + deliveryName + '\'' +
                 ", deliveryStreet='" + deliveryStreet + '\'' +
                 ", deliveryCity='" + deliveryCity + '\'' +
                 ", deliveryState='" + deliveryState + '\'' +

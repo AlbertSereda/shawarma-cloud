@@ -3,6 +3,7 @@ package com.spring.shawarma.shawarmacloud.web;
 import com.spring.shawarma.shawarmacloud.Ingredient;
 import com.spring.shawarma.shawarmacloud.Shawarma;
 import com.spring.shawarma.shawarmacloud.ShawarmaOrder;
+import com.spring.shawarma.shawarmacloud.data.IngredientRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -25,9 +26,15 @@ public class DesignShawarmaController {
 
     private static final Logger logger = LoggerFactory.getLogger(DesignShawarmaController.class);
 
+    private final IngredientRepository ingredientRepo;
+
+    public DesignShawarmaController(IngredientRepository ingredientRepo) {
+        this.ingredientRepo = ingredientRepo;
+    }
+
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = Arrays.asList(
+        /*List<Ingredient> ingredients = Arrays.asList(
                 new Ingredient("CLLA", "Classic lavash", Ingredient.Type.WRAP),
                 new Ingredient("GALA", "Garlic lavash", Ingredient.Type.WRAP),
                 new Ingredient("CHLA", "Cheese lavash", Ingredient.Type.WRAP),
@@ -41,13 +48,16 @@ public class DesignShawarmaController {
                 new Ingredient("SPSA", "Spacy sauce", Ingredient.Type.SAUCE),
                 new Ingredient("CHAD", "Cheese", Ingredient.Type.ADDITIVES),
                 new Ingredient("JAAD", "Jalapeno", Ingredient.Type.ADDITIVES)
-        );
+        );*/
+
+        List<Ingredient> ingredients = ingredientRepo.findAll();
 
         Type[] types = Ingredient.Type.values();
 
         for (Type type : types) {
             model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
         }
+
     }
 
     @ModelAttribute(name = "shawarmaOrder")
