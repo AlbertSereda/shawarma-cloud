@@ -1,6 +1,7 @@
 package com.spring.shawarma.shawarmacloud.web;
 
 import com.spring.shawarma.shawarmacloud.Ingredient;
+import com.spring.shawarma.shawarmacloud.Ingredient.Type;
 import com.spring.shawarma.shawarmacloud.Shawarma;
 import com.spring.shawarma.shawarmacloud.ShawarmaOrder;
 import com.spring.shawarma.shawarmacloud.data.IngredientRepository;
@@ -11,13 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.spring.shawarma.shawarmacloud.Ingredient.Type;
-
 import javax.validation.Valid;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller
 @RequestMapping("/design")
@@ -34,30 +31,13 @@ public class DesignShawarmaController {
 
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
-        /*List<Ingredient> ingredients = Arrays.asList(
-                new Ingredient("CLLA", "Classic lavash", Ingredient.Type.WRAP),
-                new Ingredient("GALA", "Garlic lavash", Ingredient.Type.WRAP),
-                new Ingredient("CHLA", "Cheese lavash", Ingredient.Type.WRAP),
-                new Ingredient("PITA", "Pita", Ingredient.Type.WRAP),
-                new Ingredient("CHIC", "Chicken", Ingredient.Type.MEAT),
-                new Ingredient("PORK", "Pork", Ingredient.Type.MEAT),
-                new Ingredient("TOMA", "Tomatoes", Ingredient.Type.VEGGIES),
-                new Ingredient("CUCU", "Cucumbers", Ingredient.Type.VEGGIES),
-                new Ingredient("CLSA", "Classic sauce", Ingredient.Type.SAUCE),
-                new Ingredient("CHSA", "Cheese sauce", Ingredient.Type.SAUCE),
-                new Ingredient("SPSA", "Spacy sauce", Ingredient.Type.SAUCE),
-                new Ingredient("CHAD", "Cheese", Ingredient.Type.ADDITIVES),
-                new Ingredient("JAAD", "Jalapeno", Ingredient.Type.ADDITIVES)
-        );*/
-
-        List<Ingredient> ingredients = ingredientRepo.findAll();
+        Iterable<Ingredient> ingredients = ingredientRepo.findAll();
 
         Type[] types = Ingredient.Type.values();
 
         for (Type type : types) {
             model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
         }
-
     }
 
     @ModelAttribute(name = "shawarmaOrder")
@@ -75,9 +55,8 @@ public class DesignShawarmaController {
         return "design";
     }
 
-    private Iterable<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
-        return ingredients
-                .stream()
+    private Iterable<Ingredient> filterByType(Iterable<Ingredient> ingredients, Type type) {
+        return StreamSupport.stream(ingredients.spliterator(), false)
                 .filter(e -> e.getType().equals(type))
                 .collect(Collectors.toList());
     }

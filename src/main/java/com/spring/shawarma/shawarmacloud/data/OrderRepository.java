@@ -1,7 +1,7 @@
 package com.spring.shawarma.shawarmacloud.data;
 
 import com.spring.shawarma.shawarmacloud.ShawarmaOrder;
+import org.springframework.data.repository.CrudRepository;
 
-public interface OrderRepository {
-    ShawarmaOrder save(ShawarmaOrder shawarmaOrder);
+public interface OrderRepository extends CrudRepository<ShawarmaOrder, Long> {
 }

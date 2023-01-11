@@ -1,17 +1,23 @@
 package com.spring.shawarma.shawarmacloud;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@Table("Shawarma")
 public class Shawarma {
 
+    @Id
+    @Column("id")
     private Long id;
 
-    private Date createdAt = new Date();
-
+    @Column("name")
     @NotNull
     @Size(min = 5, message = "Name must be at least 5 characters long")
     private String name;
@@ -19,6 +25,9 @@ public class Shawarma {
     @NotNull
     @Size(min = 1, message = "You must choose at least 1 ingredient")
     private List<Ingredient> ingredients;
+
+    @Column("created_at")
+    private Date createdAt = new Date();
 
     public Shawarma(String name, List<Ingredient> ingredients) {
         this.name = name;

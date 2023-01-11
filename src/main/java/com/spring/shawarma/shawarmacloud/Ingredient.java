@@ -1,11 +1,23 @@
 package com.spring.shawarma.shawarmacloud;
 
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
+
 import java.util.Objects;
 
+@Table("Ingredient")
 public class Ingredient {
+
+    @Id
+    @Column("id")
     private final String id;
+
+    @Column("name")
     private final String name;
+
+    @Column("type")
     private final Type type;
 
     public enum Type {
